@@ -570,50 +570,50 @@ void probe_server_init(void){
     //retreive the individual test data on the go by entering the URL's listed here
     
     server.on("/download1.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_1_sub_1_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_1_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download2.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_1_sub_2_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_1_sub_2.csv", "text/csv", true);
     });
 
     server.on("/download3.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_1_sub_3_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_1_sub_3.csv", "text/csv", true);
     });
 
     server.on("/download4.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_2_sub_1_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_2_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download5.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_2_sub_2_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_2_sub_2.csv", "text/csv", true);
     });
 
     server.on("/download6.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_2_sub_3_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_2_sub_3.csv", "text/csv", true);
     });
 
     server.on("/download7.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_3_sub_1_measurement.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_3_sub_1.csv", "text/csv", true);
     });
     
     server.on("/download8.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_4_sub_1_vas.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_4_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download9.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_5_sub_1_temp.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_5_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download10.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_6_sub_1_temp.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_6_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download11.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_7_sub_1_cold.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_7_sub_1.csv", "text/csv", true);
     });
 
     server.on("/download12.html", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send(SPIFFS, "/test_8_sub_1_temp.csv", "text/csv", true);
+        request->send(SPIFFS, "/test_8_sub_1.csv", "text/csv", true);
     });    
 }
