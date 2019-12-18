@@ -396,6 +396,47 @@ const String evaluate_request(){
 return "";    
 }
 
+void redcap_post_message(){
+    WiFiClientSecure client;
+
+    File file = SPIFFS.open("/full_test_protocol.csv", FILE_READ);
+
+    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=file&action=import&record=";
+    api_param + configuration_data.user_settings.unique_id;
+    api_param + "field=test_result&event=&returnFormat=json";
+
+    String start_request = ""; String end_request = "";
+    start_request = start_request +
+                    "\n--AaB03x\n" +
+                    "Content-Disposition: form-data; name=\"test_protocol\"; filename=\"full_test_protocol.csv\"\n" +
+                    "Content-Transfer-Encoding: binary\n\n";
+    end_request = end_request + "\n--AaB03x--\n";
+    uint16_t full_length;
+    full_length = start_request.length() + file.size() + end_request.length();
+
+    WiFiClient client;
+    if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
+    Serial.println("Connected FILED!");
+    return;
+    }
+
+    Serial.println("Connected ok!");
+    client.println("POST /save HTTP/1.1");
+    client.println("Host: https://open.rsyd.dk/redcap/api/");
+    client.println("User-Agent: ESP32");
+    client.println("Content-Type: multipart/form-data; boundary=AaB03x");
+    client.print("Content-Length: "); client.println(full_length);
+    client.println();
+    client.print(start_request);
+
+    while (file.available()){
+    client.write(file.read());
+    }
+
+    Serial.println(">>><<<");
+    client.println(end_request);
+}
+
 void probe_server_init(void){
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
