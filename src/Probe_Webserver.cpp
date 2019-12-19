@@ -397,6 +397,7 @@ return "";
 }
 
 void redcap_post_message(){
+    int timeout = 5000;
     WiFiClientSecure client;
 
     File file = SPIFFS.open("/full_test_protocol.csv", FILE_READ);
@@ -414,7 +415,7 @@ void redcap_post_message(){
     uint16_t full_length;
     full_length = start_request.length() + file.size() + end_request.length();
 
-    WiFiClient client;
+    //WiFiClient client;
     if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
     Serial.println("Connected FILED!");
     return;
@@ -435,6 +436,28 @@ void redcap_post_message(){
 
     Serial.println(">>><<<");
     client.println(end_request);
+
+    Serial.print("Waiting for response ");
+    while (client.available() == 0)
+    {
+        if (millis() - timeout > 50000)
+        {
+        Serial.println(">>> Client Timeout !");
+        client.stop();
+        return;
+        }
+    }
+    
+    Serial.println("Response From Server");
+    String resp;
+    while(client.available())
+    {
+        //char c = client.read();
+        
+        resp += client.read();
+                Serial.print(resp);
+        
+    }
 }
 
 void probe_server_init(void){
