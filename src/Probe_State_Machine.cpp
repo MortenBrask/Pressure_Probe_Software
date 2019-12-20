@@ -866,6 +866,12 @@ void S_save(){
                 test_flags.once = 1;
             }
             
+            break;
+            case E_set:
+            if(test_flags.once == 0){
+                    redcap_post_message();
+                    test_flags.once = 1;
+            }
             break;        
         default:            
             break;

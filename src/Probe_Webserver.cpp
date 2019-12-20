@@ -405,7 +405,49 @@ void redcap_post_message(){
     String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=file&action=import&record=";
     api_param + configuration_data.user_settings.unique_id;
     api_param + "field=test_result&event=&returnFormat=json";
+//----------------------------------------------------------------POST record to redcap START----------------------------------------------------------//
+    //WiFiClient client;
+    if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
+    Serial.println("Connected FAILED!");
+    return;
+    }
 
+    client.println("POST /posts HTTP/1.1");
+    client.println("Host: https://open.rsyd.dk/redcap/api/");
+    client.println("Cache-Control: no-cache");
+    client.println("Content-Type: application/x-www-form-urlencoded");
+    client.print("Content-Length: ");
+    client.println(api_param.length());
+    client.println();
+    client.println(api_param);
+
+    Serial.print("Waiting for response ");
+    while (client.available() == 0)
+    {
+        if (millis() - timeout > 50000)
+        {
+        Serial.println(">>> Client Timeout !");
+        client.stop();
+        return;
+        }
+    }
+    
+    Serial.println("Response From Server");
+    String resp_1;
+    while(client.available())
+    {
+        //char c = client.read();
+        
+        resp_1 += client.read();
+        Serial.print(resp_1);        
+    }
+    if(!resp_1.equals("{\"count\": 1}")){
+        //error
+        return;
+    }
+//----------------------------------------------------------------POST record to redcap END------------------------------------------------------------//
+
+//----------------------------------------------------------------POST file to redcap START------------------------------------------------------------//
     String start_request = ""; String end_request = "";
     start_request = start_request +
                     "\n--AaB03x\n" +
@@ -417,7 +459,7 @@ void redcap_post_message(){
 
     //WiFiClient client;
     if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
-    Serial.println("Connected FILED!");
+    Serial.println("Connected FAILED!");
     return;
     }
 
@@ -449,15 +491,20 @@ void redcap_post_message(){
     }
     
     Serial.println("Response From Server");
-    String resp;
+    String resp_2;
     while(client.available())
     {
         //char c = client.read();
         
-        resp += client.read();
-                Serial.print(resp);
+        resp_2 += client.read();
+                Serial.print(resp_2);
         
     }
+    if(!resp_2.equals("{\"count\": 1}")){
+        //error
+        return;
+    }
+    //---------------------------------------------------POST file to redcap END---------------------------------------------------//
 }
 
 void probe_server_init(void){

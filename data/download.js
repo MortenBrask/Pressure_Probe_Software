@@ -1,5 +1,6 @@
 //Selectors
 const downloadTest = document.querySelector('#dropTest');
+const uploadTest = document.querySelector('#upload');
 
 //Selectors
 document.addEventListener('WS_set', setHandler, false);
@@ -14,5 +15,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         e.preventDefault;
         sendStartData();
     });  
+
+    uploadTest.addEventListener('click', function(e) {
+        e.preventDefault;
+        sendSetData();
+    });
   //Functions
 });
