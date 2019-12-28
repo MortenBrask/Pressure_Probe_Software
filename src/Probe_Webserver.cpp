@@ -221,7 +221,7 @@ String template_processor(const String& var)
             case TEST_6:
                 return String("https://www.youtube.com/embed/N-ks1kCI6Pw");
             case TEST_7:
-                return String("https://www.youtube.com/embed/_tjogGNOC5Q");
+                return String("https://www.youtube.com/embed/4k_YWlNdheA");
             case TEST_8:
                 return String("https://www.youtube.com/embed/FXQow21r86Y");
             default:
@@ -396,115 +396,182 @@ const String evaluate_request(){
 return "";    
 }
 
+#include "lwip/inet.h"
+#include "lwip/dns.h"
+
 void redcap_post_message(){
     int timeout = 5000;
+
+    //const char* fingerprint = "B1 BC 96 8B D4 F4 9D 62 2A A8 9A 81 F2 15 01 52 A4 1D 82 9C";
+
     WiFiClientSecure client;
+    client.setTimeout(10);
+    //client.setCACert(fingerprint);
 
     File file = SPIFFS.open("/full_test_protocol.csv", FILE_READ);
 
-    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=file&action=import&record=";
-    api_param + configuration_data.user_settings.unique_id;
-    api_param + "field=test_result&event=&returnFormat=json";
+//token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id&1234,1234=&returnContent=count&returnFormat=json
+
+    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id\n";
+    api_param += configuration_data.user_settings.unique_id;
+    api_param += ",";
+    api_param += configuration_data.user_settings.unique_id;
+    api_param += "&returnContent=count&returnFormat=json";
+
+    
+    //api_param + "field=test_result&event=&returnFormat=json";
+    Serial.println(api_param);
+    //Serial.println(api_body);
+    //dns.stop();
+    //WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.gatewayIP(), WiFi.gatewayIP());
+    ip_addr_t dnssrv=dns_getserver(0);
+    Serial.print("DNS server: ");
+    Serial.println(inet_ntoa(dnssrv));
+    Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print("Subnet Mask: ");
+  Serial.println(WiFi.subnetMask());
+  Serial.print("Gateway IP: ");
+  Serial.println(WiFi.gatewayIP());
+  Serial.print("DNS: ");
+  Serial.println(WiFi.dnsIP());
 //----------------------------------------------------------------POST record to redcap START----------------------------------------------------------//
     //WiFiClient client;
-    if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
-    Serial.println("Connected FAILED!");
+    //int code = client.connect("http://open.rsyd.dk/redcap/api/", 443, timeout);
+    if (!client.connect("https://open.rsyd.dk", 443, timeout)) {
+        Serial.println("Connection FAILED!");
+        //Serial.printf("%d",code);
     return;
     }
 
-    client.println("POST /posts HTTP/1.1");
-    client.println("Host: https://open.rsyd.dk/redcap/api/");
+    client.println("POST /redcap/api/ HTTP/1.1");
+    client.println("Host: open.rsyd.dk");
     client.println("Cache-Control: no-cache");
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.print("Content-Length: ");
     client.println(api_param.length());
     client.println();
     client.println(api_param);
-
+    
     Serial.print("Waiting for response ");
-    while (client.available() == 0)
+    while (!client.available())
     {
-        if (millis() - timeout > 50000)
+        /*if (millis() - timeout > 50000)
         {
         Serial.println(">>> Client Timeout !");
         client.stop();
         return;
-        }
+        }*/
     }
     
     Serial.println("Response From Server");
     String resp_1;
-    while(client.available())
-    {
-        //char c = client.read();
-        
-        resp_1 += client.read();
-        Serial.print(resp_1);        
-    }
-    if(!resp_1.equals("{\"count\": 1}")){
-        //error
-        return;
-    }
-//----------------------------------------------------------------POST record to redcap END------------------------------------------------------------//
-
-//----------------------------------------------------------------POST file to redcap START------------------------------------------------------------//
-    String start_request = ""; String end_request = "";
-    start_request = start_request +
-                    "\n--AaB03x\n" +
-                    "Content-Disposition: form-data; name=\"test_protocol\"; filename=\"full_test_protocol.csv\"\n" +
-                    "Content-Transfer-Encoding: binary\n\n";
-    end_request = end_request + "\n--AaB03x--\n";
-    uint16_t full_length;
-    full_length = start_request.length() + file.size() + end_request.length();
-
-    //WiFiClient client;
-    if (!client.connect("https://open.rsyd.dk/redcap/api/", 443)) {
-    Serial.println("Connected FAILED!");
-    return;
-    }
-
-    Serial.println("Connected ok!");
-    client.println("POST /save HTTP/1.1");
-    client.println("Host: https://open.rsyd.dk/redcap/api/");
-    client.println("User-Agent: ESP32");
-    client.println("Content-Type: multipart/form-data; boundary=AaB03x");
-    client.print("Content-Length: "); client.println(full_length);
-    client.println();
-    client.print(start_request);
-
-    while (file.available()){
-    client.write(file.read());
-    }
-
-    Serial.println(">>><<<");
-    client.println(end_request);
-
-    Serial.print("Waiting for response ");
-    while (client.available() == 0)
-    {
-        if (millis() - timeout > 50000)
-        {
-        Serial.println(">>> Client Timeout !");
-        client.stop();
-        return;
-        }
-    }
-    
     Serial.println("Response From Server");
-    String resp_2;
     while(client.available())
     {
-        //char c = client.read();
-        
-        resp_2 += client.read();
-                Serial.print(resp_2);
-        
+        char c = client.read();
+        //Serial.write(c);
+        resp_1 += c;        
     }
-    if(!resp_2.equals("{\"count\": 1}")){
-        //error
+    Serial.println(resp_1);
+    String response = resp_1.substring(resp_1.length() - 12);
+    Serial.println(response);
+    if(!response.equals("{\"count\": 1}")){
+        Serial.println("not equal");
         return;
+    } 
+//----------------------------------------------------------------POST record to redcap END------------------------------------------------------------//
+//----------------------------------------------------------------POST file to redcap START------------------------------------------------------------//
+ 
+    else{
+        Serial.println("record uploaded!");
+        Serial.println("Begin test result upload");
+
+        client.flush();
+
+        String boundry = "\n--AaB03x\n";
+        String start_request = "";
+        start_request = start_request + 
+            boundry +
+            "Content-Disposition: form-data; name=\"token\"\n\n4A7B39E342D72F953EC4E03BFD3AA4D4" +
+            boundry +
+            "Content-Disposition: form-data; name=\"content\"\n\nfile" +
+            boundry +
+            "Content-Disposition: form-data; name=\"action\"\n\nimport" +
+            boundry + 
+            "Content-Disposition: form-data; name=\"record\"\n\n" +
+            configuration_data.user_settings.unique_id +
+            boundry +
+            "Content-Disposition: form-data; name=\"field\"\n\ntest_result" +
+            boundry +
+            "Content-Disposition: form-data; name=\"event\"\n\n\n" +
+            boundry +
+            "Content-Disposition: form-data; name=\"returnFormat\"\n\njson";
+
+        //String start_file_request = ""; 
+        String end_request = "";
+        start_request = start_request +
+                        "\n--AaB03x\n" +
+                        "Content-Disposition: form-data; name=\"file\"; filename=\"full_test_protocol.csv\"\n" +
+                        "Content-Transfer-Encoding: binary\n\n";
+        end_request = end_request + "\n--AaB03x--\n";
+
+        uint16_t full_length;
+        full_length = start_request.length() + file.size() + end_request.length();
+
+        //WiFiClient client;
+        //if (!client.connect("https://open.rsyd.dk", 443)) {
+        //Serial.println("Connected FAILED!");
+        //return;
+        //}
+
+        //Serial.println("Connected ok!");
+        client.println("POST /redcap/api/ HTTP/1.1");
+        client.println("Host: open.rsyd.dk");
+        client.println("User-Agent: ESP32");
+        client.println("Content-Type: multipart/form-data; boundary=AaB03x");
+        client.print("Content-Length: "); client.println(full_length);
+        client.println();
+        client.print(start_request);
+
+        while (file.available()){
+        client.write(file.read());
+        }
+
+        Serial.println(">>><<<");
+        client.println(end_request);
+
+        Serial.print("Waiting for response ");
+        while (!client.available())
+        {
+            /*if (millis() - timeout > 50000)
+            {
+            Serial.println(">>> Client Timeout !");
+            client.stop();
+            return;
+            }*/
+        }
+        
+        Serial.println("Response From Server");
+        String resp_2;
+        while(client.available())
+        {
+            char c = client.read();            
+            resp_2 += c;            
+        }
+        Serial.print(resp_2);
+        
+        String response_2 = resp_2.substring(0,15);
+        Serial.println(response_2);
+
+        if(!response_2.equals("HTTP/1.1 200 OK")){
+            Serial.println("not equal");
+            return;
+        }
+        Serial.println("upload completed!");
     }
-    //---------------------------------------------------POST file to redcap END---------------------------------------------------//
+//---------------------------------------------------POST file to redcap END---------------------------------------------------//
+client.stop();    
 }
 
 void probe_server_init(void){
@@ -674,6 +741,10 @@ void probe_server_init(void){
 
     server.on("/downloadraw.html", HTTP_GET, [](AsyncWebServerRequest *request){
         request->send(SPIFFS, "/raw_capture_measurement.csv", "text/csv", true);
+    });
+
+    server.on("/downloadconfig.html", HTTP_GET, [](AsyncWebServerRequest *request){
+        request->send(SPIFFS, "/json_conf.txt", "text/csv", true);
     });
 
     //--------------------------INDIVIUAL DOWNLOAD URL's-------------------------------------------//

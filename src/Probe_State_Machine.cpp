@@ -584,7 +584,7 @@ void S_vas_temp(){
             if(test_flags.once == 0){
                 if(test_flags.sub < SUB_ROUTINE_2){
                     test_flags.sub = static_cast<TEST_SUB>(static_cast<int>(test_flags.sub) + 1);
-                }
+                }                
                 Serial.println("VAS finish");
                 
                 probe_vas_measurement_finish();
@@ -785,6 +785,8 @@ void S_save(){
                 display.display();
                 delay(10);
 
+                save_probe_configuration();
+                
                 test_flags.once = 1;                
             }
             break;
