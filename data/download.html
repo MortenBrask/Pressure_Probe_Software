@@ -128,7 +128,18 @@
             <div class="row">
               <div class="col-6">
                 <!--div class="col-6"-->
-                  <a id="upload" class="btn btn-outline-secondary mb-3" href="#" role="button">Upload to Database</a>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <button id="upload" class="btn btn-outline-secondary" type="button">Upload to Database</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <div class="input-group-text bg-dark">
+                      <i id="uploadStatusIcon" class="far fa-save" style="color:red"></i>
+                    </div>
+                  </div>
+                  <input id="uploadStatusText" type="text-light" class="form-control text-light bg-dark text-center text-wrap" readonly value="Upload Status" aria-label="" aria-describedby="basic-addon1">
+                </div>
+                  <!--a id="upload" class="btn btn-outline-secondary mb-3" href="#" role="button">Upload to Database</a-->
                 <!--/div-->
                 <div class="dropdown">
                   <button class="btn btn-outline-secondary dropdown-toggle mb-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -412,11 +412,11 @@ void redcap_post_message(){
 
 //token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id&1234,1234=&returnContent=count&returnFormat=json
 
-    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id\n";
+    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id,pressure_probe_complete\n";
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",";
     api_param += configuration_data.user_settings.unique_id;
-    api_param += "&returnContent=count&returnFormat=json";
+    api_param += ",2&returnContent=count&returnFormat=json";
 
     
     //api_param + "field=test_result&event=&returnFormat=json";
@@ -478,6 +478,18 @@ void redcap_post_message(){
     Serial.println(response);
     if(!response.equals("{\"count\": 1}")){
         Serial.println("not equal");
+
+        //create JSON document with space for 2 field
+        const size_t capacity = JSON_OBJECT_SIZE(1);
+        DynamicJsonDocument doc(capacity);
+        //insert the field value
+        doc["type"] = "error";
+        
+        String json_error;
+
+        serializeJson(doc, json_error); 
+        webSocket.broadcastTXT(json_error);
+
         return;
     } 
 //----------------------------------------------------------------POST record to redcap END------------------------------------------------------------//
@@ -485,7 +497,7 @@ void redcap_post_message(){
  
     else{
         Serial.println("record uploaded!");
-        Serial.println("Begin test result upload");
+        Serial.println("Begin test result upload");        
 
         client.flush();
 
@@ -568,7 +580,20 @@ void redcap_post_message(){
             Serial.println("not equal");
             return;
         }
-        Serial.println("upload completed!");
+        else{
+            Serial.println("upload completed!");
+            //create JSON document with space for 2 field
+            const size_t capacity = JSON_OBJECT_SIZE(1);
+            DynamicJsonDocument doc(capacity);
+            //insert the field value
+            doc["type"] = "success";
+            
+            String json_success;
+
+            serializeJson(doc, json_success); 
+            webSocket.broadcastTXT(json_success);
+        }
+        
     }
 //---------------------------------------------------POST file to redcap END---------------------------------------------------//
 client.stop();    
