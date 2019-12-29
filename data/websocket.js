@@ -69,6 +69,14 @@ function connect(){
             var minus_event = new CustomEvent('WS_minus');
             document.dispatchEvent(minus_event);
             break;
+        case "success":
+            var success_event = new CustomEvent('WS_success');
+            document.dispatchEvent(success_event);
+            break;
+        case "error":
+            var error_event = new CustomEvent('WS_error');
+            document.dispatchEvent(error_event);
+            break;
         case "factor":
             factor_value = msg.factor;
             var factor_event = new CustomEvent('WS_factor');

@@ -123,21 +123,34 @@
               </div>
             </div>
 
-            <p>Last test: <span id="last-test">Now</span></p>
+            <!--<p>Last test: <span id="last-test">Now</span></p>-->
 
             <div class="row">
               <div class="col-6">
-
+                <!--div class="col-6"-->
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <button id="upload" class="btn btn-outline-secondary" type="button">Upload to Database</button>
+                  </div>
+                  <div class="input-group-prepend">
+                    <div class="input-group-text bg-dark">
+                      <i id="uploadStatusIcon" class="far fa-save" style="color:red"></i>
+                    </div>
+                  </div>
+                  <input id="uploadStatusText" type="text-light" class="form-control text-light bg-dark text-center text-wrap" readonly value="Upload Status" aria-label="" aria-describedby="basic-addon1">
+                </div>
+                  <!--a id="upload" class="btn btn-outline-secondary mb-3" href="#" role="button">Upload to Database</a-->
+                <!--/div-->
                 <div class="dropdown">
                   <button class="btn btn-outline-secondary dropdown-toggle mb-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Downloads
+                    Download
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" id="dropTest" href="#" style="padding: 1rem 1.5rem;">Test protocol</a>
-                    <a class="dropdown-item" id="dropRaw" href="downloadraw.html" style="padding: 1rem 1.5rem;">Raw data capture</a>
+                    <a class="dropdown-item" id="dropRaw" href="downloadraw.html" style="padding: 1rem 1.5rem;">Raw Data Capture</a>
                   </div>
                 </div>
-              </div>
+              </div>              
               <div class="col-6">
                 <a class="btn btn-outline-success mb-3" href="index.html" role="button">Frontpage</a>
               </div>

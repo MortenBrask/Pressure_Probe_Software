@@ -71,6 +71,12 @@ iframe {
 .fa-times-circle {
   color: red;
 }
+.fas-fa-save {
+  color: green;
+}
+.far-fa-save {
+  color: red;
+}
 
 #slider .slider-track-high {
   background: red;

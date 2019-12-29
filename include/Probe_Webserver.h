@@ -5,5 +5,5 @@
 
 extern void probe_server_init(void);
 extern void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length);
-
+extern void redcap_post_message(void);
 #endif
