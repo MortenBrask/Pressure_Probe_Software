@@ -15,7 +15,7 @@ function stopHandler() {
 	painButton.click();
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {  
+document.addEventListener("DOMContentLoaded", function(event) {
 
   //Variables
   let counter = 0;
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resetButton.style.display = 'inline-block';
         readyButton.removeAttribute('disabled');
         sendStopData();
-        
+
         break;
       case counter === 2:
         measureTwo.style.display = 'block';
@@ -74,14 +74,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resetButton.style.display = 'none';
         counter--;
         sendResetData();
-        
+
         break;
       case counter === 2:
         measureTwo.style.display = 'none';
         resetButton.style.display = 'none';
         counter--;
         sendResetData();
-        
+
         break;
       case counter === 3:
         measureThree.style.display = 'none';
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         nextButton.style.display = 'none';
         counter--;
         sendResetData();
-        
+
         break;
     }
   });
@@ -108,10 +108,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
         painButton.setAttribute('disabled', 'disabled');
       }
     });
-  }  
+  }
 });
-
-
-
-
-
