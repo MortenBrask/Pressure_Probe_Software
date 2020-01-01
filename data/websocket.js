@@ -28,7 +28,7 @@ function connect(){
     var connected_event = new CustomEvent('WS_connected');
     document.dispatchEvent(connected_event);
   };
-  
+
   webSocket.onclose = () => {
     $.blockUI({ message: null });
     console.log('Connection closed');
@@ -38,10 +38,10 @@ function connect(){
   };
 
   webSocket.onmessage = function(event){
-    console.log('data received');        
+    console.log('data received');
     var msg = JSON.parse(event.data);
     console.log(msg);
-  
+
     switch(msg.type) {
         case "start":
             //start = true;
@@ -103,7 +103,7 @@ function connect(){
             roc_value = msg.roc;
             var raw_event = new CustomEvent('WS_raw');
             document.dispatchEvent(raw_event);
-            break;  
+            break;
         case "weight":
             weight_value = msg.weight;
             var weight_event = new CustomEvent('WS_weight');
@@ -113,7 +113,7 @@ function connect(){
             roc_value = msg.target_roc;
             max_press_value = msg.max_pressure;
             vas_freq_value = msg.vas_freq;
-            var settings_event = new CustomEvent('WS_settings');            
+            var settings_event = new CustomEvent('WS_settings');
             document.dispatchEvent(settings_event);
             break;
         case "id":
@@ -122,41 +122,40 @@ function connect(){
             var id_event = new CustomEvent('WS_id');
             document.dispatchEvent(id_event);
             break;
-    }        
+    }
   };
 
   webSocket.onerror = (error) => {
     console.error('Socket encountered error: ' + error.message + '. Closing socket.');
-    webSocket.onclose();        
+    webSocket.onclose();
   };
 };
 
-
 function sendStartData() {
   var data = {
-  type: "Start",    
-  //reading: measurementNumber 
+  type: "Start",
+  //reading: measurementNumber
   };
   console.log('Start sent function');
   webSocket.send(JSON.stringify(data));
-}  
+}
 function sendStopData() {
   var data = {
-  type: "Stop"    
+  type: "Stop"
   };
   console.log('Stop sent function');
   webSocket.send(JSON.stringify(data));
 }
 function sendSetData() {
   var data = {
-  type: "Set"    
+  type: "Set"
   };
   console.log('Set sent function');
   webSocket.send(JSON.stringify(data));
 }
 function sendResetData() {
   var data = {
-  type: "Reset"    
+  type: "Reset"
   };
   console.log('Reset sent function');
   webSocket.send(JSON.stringify(data));
@@ -201,7 +200,7 @@ function sendRocOnData() {
 function sendRocOffData() {
   var data = {
   type: "Raw_roc_off"
-  }; 
+  };
   console.log('roc off sent function');
   webSocket.send(JSON.stringify(data));
 }
@@ -226,7 +225,7 @@ function sendData(data_type) {
 
       console.log('VAS data sent function');
       console.log(data);
-  } 
+  }
   else if(data_type === 3){
     var data = {
       type: "Settings",
@@ -261,23 +260,19 @@ function sendData(data_type) {
   webSocket.send(JSON.stringify(data));
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", function(event) {
-  
+
   //const painButton = document.querySelector('#pain-button');
   //Invoke WebSocket
   ws();
 
   //WebSocket connection
   function ws () {
-    if ('WebSocket' in window) {    
+    if ('WebSocket' in window) {
       connect();
     } else {
       // The browser doesn't support WebSocket
       alert('WebSocket not supported by your browser');
     }
-  }  
+  }
 });
-
