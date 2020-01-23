@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
         else {
             sendMaxOffData();
-        }        
+        }
     });
 
     // roc_onoff.addEventListener('change', function(){
@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         sendStopData();
         setTimeout(function() {
             window.location.href = "download.html";
-          }, 2000);               
+          }, 2000);
     });
 
     frontpageButton.addEventListener('click', function(){
         sendStopData();
-        window.location.href = "index.html";        
+        window.location.href = "index.html";
     });
 
 });
