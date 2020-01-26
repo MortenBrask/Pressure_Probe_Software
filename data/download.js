@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     downloadTest.addEventListener('click', function(e) {
         e.preventDefault;
-        sendStartData();
-    });  
+        // sendStartData();
+    });
 
     uploadTest.addEventListener('click', function(e) {
         e.preventDefault;
