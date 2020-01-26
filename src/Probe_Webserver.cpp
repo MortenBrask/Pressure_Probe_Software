@@ -141,6 +141,18 @@ void data_handler(uint8_t * payload){
         probe_event = E_rx_id;
         test_flags.once = 0;        
     }
+    else if(!strcmp(jstype,"site_label")){
+        const char * jssite = JSONDoc["site"];
+        configuration_data.trx_data.socket_rx_data.msg_type = DATA_SITE_LABEL;
+        configuration_data.trx_data.socket_trx_type = socket_RX;
+        configuration_data.trx_data.socket_rx_data.user_settings.site_label = jssite;
+    #ifdef PROBE_DEBUG
+        Serial.println("data received =");
+        Serial.println(jssite);
+    #endif
+        probe_event = E_rx_site_label;
+        test_flags.once = 0;        
+    }
     else if(!strcmp(jstype,"Settings")){        
         float jsroc = JSONDoc["roc"];
         int jsmaxpress = JSONDoc["max_press"];
@@ -450,6 +462,7 @@ void redcap_post_message(){
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",";
     api_param += configuration_data.user_settings.site_label;
+    api_param += ",";
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",2&returnContent=count&returnFormat=json";
 

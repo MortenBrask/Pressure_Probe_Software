@@ -166,23 +166,33 @@ void S_home(){
             if(test_flags.once == 0){
                 probe_event = E_no_event;
                 //create JSON document with space for 3 field
-                const size_t capacity = JSON_OBJECT_SIZE(3);
+                const size_t capacity = JSON_OBJECT_SIZE(4);
                 DynamicJsonDocument doc(capacity);
                 //insert the field value
-                doc["type"] = "id";
+                doc["type"] = "index_init";
                 doc["id"] = configuration_data.user_settings.unique_id;
                 doc["prev_id"] = configuration_data.user_settings.prev_unique_id;
+                doc["site_label"] = configuration_data.user_settings.site_label.c_str();
                 String json_id;
+
+                Serial.println("site_label contains:");
+                Serial.println(configuration_data.user_settings.site_label);
 
                 serializeJson(doc, json_id); 
                 webSocket.broadcastTXT(json_id);
+                Serial.println(json_id);
                 delay(100);
                 test_flags.once = 1;
             }                                
             break;
-        case E_rx_id:
+        case E_rx_site_label:
             if(test_flags.once == 0){
-                configuration_data.user_settings.unique_id = configuration_data.trx_data.socket_rx_data.user_settings.unique_id;
+                configuration_data.user_settings.site_label = configuration_data.trx_data.socket_rx_data.user_settings.site_label;
+                
+                Serial.println("site_label rx contains:");
+                Serial.println(configuration_data.user_settings.site_label);
+
+                save_probe_configuration();
                 test_flags.once = 1;
                 probe_event = E_no_event;                
             }                
