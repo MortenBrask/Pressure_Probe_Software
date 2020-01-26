@@ -148,6 +148,9 @@ typedef struct {
     int adjust;
     int resume;
     int once;
+    float avg_measurement;
+    float avg_result_local;
+    float avg_result_distal;
 }TEST_PROGRESS;
 
 typedef void (*S_PROBE_STATE_pointer)();
@@ -173,6 +176,7 @@ extern const String link_strings[8];
 extern const String video_strings[8];
 extern const String ld_select_strings[8];
 extern const String check_mark[2];
+extern const String probe_select[4];
 extern const char *test_1_files[3];
 extern const char *test_2_files[3];
 extern const char *files[8];

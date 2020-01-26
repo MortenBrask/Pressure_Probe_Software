@@ -57,6 +57,8 @@ const String link_strings[8] = {"measure.html","measure.html","vas.html","vas.ht
 const String video_strings[8] = {"Pain Threshold","Pain Threshold","VAS","VAS","Temporal Summation","Temporal Summation","Cold Presssure","Temporal Summation"};
 const String ld_select_strings[8] = {"Local","Distal","Local","Distal","Local","Distal","",""};
 const String check_mark[2] = {"\"fa fa-check-circle\"","\"fa fa-times-circle\""};
+const String probe_select[4] = {"Probe 2","Probe 4","Probe 6","Probe 8"};
+
 const char *test_1_files[3] = {
     "/measure_1_sub_1.csv",
     "/measure_1_sub_2.csv",
@@ -90,7 +92,10 @@ TEST_PROGRESS test_flags = {
     .raw_roc_on = 0,
     .adjust = 0,
     .resume = 0,
-    .once = 0
+    .once = 0,
+    .avg_measurement = 0.0,
+    .avg_result_local = 0.0,
+    .avg_result_distal = 0.0
 };
 
 void write_test_progress(){    
@@ -786,12 +791,7 @@ void S_save(){
                 delay(10);
 
                 save_probe_configuration();
-                
-                test_flags.once = 1;                
-            }
-            break;
-        case E_start:
-            if(test_flags.once == 0){
+
                 //append all files from test protocol starting from TEST1 up until configuration_data.probe_test_progress.prev_test
                 File data = SPIFFS.open("/full_test_protocol.csv", FILE_WRITE);
 
@@ -848,6 +848,13 @@ void S_save(){
                 }
                                 
                 data.close();
+                
+                test_flags.once = 1;                
+            }
+            break;
+        case E_start:
+            if(test_flags.once == 0){
+                
 
                 //create JSON document with space for one field
                 const size_t capacity = JSON_OBJECT_SIZE(1);

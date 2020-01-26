@@ -42,15 +42,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //Reset WiFi configuration
   resetWifi.addEventListener('click', sendResetData);
 
-  //Functions
-  function generateRandomId() {
-    randomId.value = Math.random().toString(36).substring(2, 7);
-    id_value = randomId.value;
-
-    if(webSocket.readyState === webSocket.OPEN){
-       //sendData(4);
-       //console.log("send id");
-    }
-  }
+  
   //Functions
 });
