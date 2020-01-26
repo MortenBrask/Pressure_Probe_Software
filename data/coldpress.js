@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const vas = document.querySelector('#test');
   const sec = document.querySelector('#seconds');
   const measureOne = document.querySelector('#measure-one');
-  
+
   const slider = new Slider("#slider", { reversed : true });
-        
+
   //Selectors
   document.addEventListener('WS_connected', connectedHandler, false);
   document.addEventListener('WS_stop', stopHandler, false);
@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     stopButton.style.display = 'block';
     vas.style.display = 'block';
     sendStartData();
-    
+
     dataTimer(vas_freq_value * 1000);
-    timer(120);    
+    timer(120);
   });
 
   readyButton.addEventListener('click', function(e) {
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     readyButton.style.display = 'none';
     stopButton.style.display = 'block';
     vas.style.display = 'block';
-    sec.textContent = 0;    
+    sec.textContent = 0;
   });
 
   stopButton.addEventListener('click', function(e) {
@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     switch (counter <= 3) {
       case counter === 1:
         measureOne.style.display = 'block';
-        painButton.style.display = 'none';        
+        painButton.style.display = 'none';
         nextButton.style.display = 'inline-block';
 
         sendStopData();
-        break;      
+        break;
     }
     return counter;
   });
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         measureOne.style.display = 'none';
         resetButton.style.display = 'none';
         counter--;
-        break;      
+        break;
     }
   });
 
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     });
   }
-  
+
   function dataTimer(sec) {
     interval = setInterval(function() {
       sendData(2)
@@ -116,9 +116,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var secondsPassed = ++seconds % 120;
 
       if (secondsPassed === 100) {
-        stopButton.style.display = 'none';        
+        stopButton.style.display = 'none';
         painButton.style.display = 'block';
-        sendSetData();
+        // sendSetData();
       }
 
       if (secondsPassed === 119) {
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const remainingSeconds = seconds;
     const display = `${remainingSeconds}`;
     sec.textContent = display;
-    
+
   }
 
   function clear() {
