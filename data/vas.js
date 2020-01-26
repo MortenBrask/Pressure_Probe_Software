@@ -1,7 +1,7 @@
 $(document).ready(function() {
     const slider = new Slider("#slider", { reversed : true });
     const startButton = document.getElementById('start');
-    const stopButton = document.getElementById('stop');      
+    const stopButton = document.getElementById('stop');
     const sound = document.getElementById('sound');
 
     //const play = setInterval(audio, 3000);
@@ -16,7 +16,7 @@ $(document).ready(function() {
         document.getElementById("slider-value").textContent = sliderValue.newValue;
         vas_value = sliderValue.newValue;
     });
-    
+
     startButton.addEventListener('click', function(e) {
       e.preventDefault;
       startButton.style.display = 'none';
@@ -33,20 +33,4 @@ $(document).ready(function() {
       sendStopData();
       sendData(2);
     });
-
-    
-    
   });
-  
-   
-  
-    
-    
-    
-  
-  
-  
-  
-  
-  
-  

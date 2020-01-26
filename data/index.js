@@ -13,14 +13,14 @@ function idHandler() {
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
- 
+
   startTest.addEventListener('click', function(e) {
     e.preventDefault;
     if(id_value === prev_id_value){
       alert("ERROR\nPlease generate new ID" );
     }
     else {
-      startTest.href="video.html"; 
+      startTest.href="video.html";
       return false;
     }
   });
@@ -35,24 +35,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
       alert("ERROR\nNo test in progress,\nPlease start new test");
     }
   });
+  
   //Generate new random ID
   newRandomIdButton.addEventListener('click', sendStartData);
 
-  //Reset WiFi configuration  
+  //Reset WiFi configuration
   resetWifi.addEventListener('click', sendResetData);
 
   //Functions
   function generateRandomId() {
     randomId.value = Math.random().toString(36).substring(2, 7);
     id_value = randomId.value;
-    
-    if(webSocket.readyState === webSocket.OPEN){ 
+
+    if(webSocket.readyState === webSocket.OPEN){
        //sendData(4);
        //console.log("send id");
     }
-    
-        
-    
   }
   //Functions
 });
