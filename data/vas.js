@@ -4,8 +4,6 @@ $(document).ready(function() {
     const stopButton = document.getElementById('stop');
     const sound = document.getElementById('sound');
 
-    //const play = setInterval(audio, 3000);
-
     function audio(sec) {
       play = setInterval(function() {
         $('audio')[0].play();
@@ -21,7 +19,7 @@ $(document).ready(function() {
       e.preventDefault;
       startButton.style.display = 'none';
       stopButton.style.display = 'block';
-      audio(3000);
+      audio(0);
       sendStartData();
     });
 

@@ -2,7 +2,7 @@ $(document).ready(function() {
     const slider = new Slider("#slider", { reversed : true });
     const startButton = document.getElementById('start');
     const stopButton = document.getElementById('stop');
-    const nextButton = document.getElementById('next');      
+    const nextButton = document.getElementById('next');
     const sound = document.getElementById('sound');
 
     //const play = setInterval(audio, 3000);
@@ -22,12 +22,12 @@ $(document).ready(function() {
         document.getElementById("slider-value").textContent = sliderValue.newValue;
         vas_value = sliderValue.newValue;
     });
-    
+
     startButton.addEventListener('click', function(e) {
       e.preventDefault;
       startButton.style.display = 'none';
       stopButton.style.display = 'block';
-      audio(vas_freq_value * 1000);
+      audio(0);
       sendStartData();
       tx_VAS(vas_freq_value * 1000);
     });
@@ -38,23 +38,10 @@ $(document).ready(function() {
       stopButton.style.display = 'none';
       nextButton.style.display = 'block';
       clearInterval(play);
-      clearInterval(tx_interval);      
+      clearInterval(tx_interval);
       sendData(2);
       sendStopData();
     });
-       
-    
+
+
   });
-  
-   
-  
-    
-    
-    
-  
-  
-  
-  
-  
-  
-  
