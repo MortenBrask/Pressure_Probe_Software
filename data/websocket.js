@@ -15,6 +15,7 @@ var ms_value = 0;
 var roc_value = 0;
 var max_press_value = 0;
 var vas_freq_value = 0;
+var label_value = '';
 var factor_value = 0;
 var weight_value = 0;
 var site_label_value = "undefined";
@@ -114,6 +115,7 @@ function connect(){
             roc_value = msg.target_roc;
             max_press_value = msg.max_pressure;
             vas_freq_value = msg.vas_freq;
+            label_value = msg.??????
             var settings_event = new CustomEvent('WS_settings');
             document.dispatchEvent(settings_event);
             break;
@@ -130,7 +132,7 @@ function connect(){
             var index_init_event = new CustomEvent('WS_index_init');
             document.dispatchEvent(index_init_event);
             break;
-        case "site_label":            
+        case "site_label":
             site_label_value = msg.site_label;
             var site_label_event = new CustomEvent('WS_site_label');
             document.dispatchEvent(site_label_event);
@@ -244,7 +246,8 @@ function sendData(data_type) {
       type: "Settings",
       roc: roc_value,
       max_press: max_press_value,
-      vas_freq: vas_freq_value
+      vas_freq: vas_freq_value,
+      label: label_value
     }
   }
   else if(data_type === 4){

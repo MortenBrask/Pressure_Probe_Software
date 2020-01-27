@@ -3,6 +3,7 @@ const saveButton = document.querySelector('#save-button');
 const targetROC = document.querySelector('#target-roc');
 const maxPressure = document.querySelector('#max-pressure');
 const vasFrequency = document.querySelector('#vas-frequence');
+const label = document.querySelector('#label');
 
 
 
@@ -14,6 +15,7 @@ function settingsHandler() {
   targetROC.value = roc_value;
   maxPressure.value = max_press_value;
   vasFrequency.value = vas_freq_value;
+  label.value = label_value;
 }
 
 (function() {
@@ -34,6 +36,7 @@ function settingsHandler() {
         roc_value = targetROC.value;
         max_press_value = maxPressure.value;
         vas_freq_value = vasFrequency.value;
+        label_value = label.value;
         save();
       }
     form.classList.add('was-validated');
