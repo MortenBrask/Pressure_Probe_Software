@@ -118,6 +118,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (secondsPassed === 100) {
         stopButton.style.display = 'none';
         painButton.style.display = 'block';
+        $('audio')[0].play();
+        $('audio')[0].play();
+        $('audio')[0].play();
       }
 
       if (secondsPassed === 119) {
