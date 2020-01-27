@@ -282,21 +282,26 @@ String template_processor(const String& var)
         return (configuration_data.probe_test_progress.prev_test > TEST_8) ? check_mark[0] : check_mark[1]; 
     }
     else if(var == "PROBE_SELECT"){
+        
         if(test_flags.test == TEST_3 || test_flags.test == TEST_5){
-            if(test_flags.avg_result_local <= 200.0){
+            Serial.println("local avg:");
+            Serial.println(test_flags.avg_result_local);
+            if(test_flags.avg_result_local <= 200){
                 return probe_select[0];
             }
-            else if(test_flags.avg_result_local <= 400.0){
+            else if(test_flags.avg_result_local <= 400){
                 return probe_select[1];
             }
-            else if(test_flags.avg_result_local <= 600.0){
+            else if(test_flags.avg_result_local <= 600){
                 return probe_select[2];
             }
-            else if(test_flags.avg_result_local <= 1000.0){
+            else if(test_flags.avg_result_local <= 1000){
                 return probe_select[3];
             }
         }
         else if(test_flags.test == TEST_4 || test_flags.test == TEST_6){
+            Serial.println("distal avg:");
+            Serial.println(test_flags.avg_result_distal);
             if(test_flags.avg_result_distal <= 200.0){
                 return probe_select[0];
             }

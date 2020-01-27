@@ -27,7 +27,7 @@ $(document).ready(function() {
       e.preventDefault;
       startButton.style.display = 'none';
       stopButton.style.display = 'block';
-      audio(vas_freq_value * 1000);
+      audio(1000);
       sendStartData();
       tx_VAS(vas_freq_value * 1000);
     });

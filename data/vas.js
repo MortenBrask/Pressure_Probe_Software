@@ -21,7 +21,7 @@ $(document).ready(function() {
       e.preventDefault;
       startButton.style.display = 'none';
       stopButton.style.display = 'block';
-      audio(3000);
+      audio(1000);
       sendStartData();
     });
 

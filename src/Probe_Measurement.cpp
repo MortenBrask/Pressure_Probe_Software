@@ -193,7 +193,11 @@ void probe_measurement_finish(){
         display.printf("TEST %i SUB %i", test_flags.test + 1, test_flags.sub);
         display.display();
         //delay(100);
-        test_flags.avg_measurement += current_reading;
+        Serial.println("current reading:");
+        Serial.println(current_reading);
+        test_flags.avg_measurement += static_cast<int>(current_reading);
+        Serial.println("avg meaurement:");
+        Serial.println(test_flags.avg_measurement);
 
         roc_total_measurement_average = roc_total_measurement_average / roc_total_measurement_count;
         
@@ -209,11 +213,13 @@ void probe_measurement_finish(){
         test_measurement.println(roc_total_measurement_average);
         test_measurement.close();
         
+            
+
         if(test_flags.test == TEST_1 && test_flags.sub == SUB_ROUTINE_3){
             
-            test_flags.avg_result_local = test_flags.avg_measurement / 3.0;
-            test_flags.avg_measurement = 0.0;
-            
+            test_flags.avg_result_local = static_cast<int>(test_flags.avg_measurement / 3.0);    
+            test_flags.avg_measurement = 0;
+            Serial.println("avg result local");
             Serial.println(test_flags.avg_result_local);
             
             File test_1 = SPIFFS.open("/test_1_sub_1.csv", FILE_WRITE);
@@ -240,8 +246,9 @@ void probe_measurement_finish(){
 
         if(test_flags.test == TEST_2 && test_flags.sub == SUB_ROUTINE_3){
 
-            test_flags.avg_result_distal = test_flags.avg_measurement / 3.0;
-
+            test_flags.avg_result_distal = static_cast<int>(test_flags.avg_measurement / 3.0);
+            test_flags.avg_measurement = 0;
+            Serial.println("avg result distal");
             Serial.println(test_flags.avg_result_distal);
 
             File test_2 = SPIFFS.open("/test_2_sub_1.csv", FILE_WRITE);

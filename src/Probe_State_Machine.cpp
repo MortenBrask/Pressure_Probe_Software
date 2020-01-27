@@ -93,9 +93,9 @@ TEST_PROGRESS test_flags = {
     .adjust = 0,
     .resume = 0,
     .once = 0,
-    .avg_measurement = 0.0,
-    .avg_result_local = 0.0,
-    .avg_result_distal = 0.0
+    .avg_measurement = 0,
+    .avg_result_local = 0,
+    .avg_result_distal = 0
 };
 
 void write_test_progress(){    
@@ -333,10 +333,11 @@ void S_probe_measurement(){
             break;
         case E_stop:
             if(test_flags.once == 0){
+                probe_measurement_finish();
                 if(test_flags.sub < SUB_ROUTINE_3){
                     test_flags.sub = static_cast<TEST_SUB>(static_cast<int>(test_flags.sub) + 1);
                 }
-                probe_measurement_finish();
+                
                 test_flags.once = 1;
             }
             break;
