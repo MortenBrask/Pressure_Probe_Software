@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function stopHandler(){
     clear();
     nextButton.style.display = 'inline-block';
+    painButton.style.display = 'none';
   }
 
   slider.on("change", function(sliderValue) {
