@@ -191,7 +191,7 @@ void probe_cold_pressure_measurement(){
             test_measurement.println(roc_total);
         }
         else if(test_flags.sub == SUB_ROUTINE_3){
-            test_measurement.print(configuration_data.trx_data.socket_rx_data.measurement_data.measurement);
+            test_measurement.print("VAS_STOP");
             test_measurement.print(",");                
             test_measurement.print(current_reading);
             test_measurement.print(",");

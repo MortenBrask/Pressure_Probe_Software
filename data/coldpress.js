@@ -105,6 +105,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
   
+  function audio(sec) {
+    play = setInterval(function() {
+      $('audio')[0].play();
+    }, sec);
+  }
+
   function dataTimer(sec) {
     interval = setInterval(function() {
       sendData(2)
@@ -120,9 +126,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         stopButton.style.display = 'none';        
         painButton.style.display = 'block';
         sendSetData();
-        $('audio')[0].play();
-        $('audio')[0].play();
-        $('audio')[0].play();
+        audio(300);
+        //$('audio')[0].play();
+        //$('audio')[0].play();
+        //$('audio')[0].play();
+      }
+
+      if(secondsPassed === 105) {
+        clearInterval(play);
       }
 
       if (secondsPassed === 119) {
