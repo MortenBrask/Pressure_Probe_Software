@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         clear();
         secondsPassed++;
         nextButton.style.display = 'inline-block';
+        painButton.style.display = 'none';
         sendStopData();
       }
       displayTimeLeft(secondsPassed);
