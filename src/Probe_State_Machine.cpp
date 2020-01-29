@@ -57,6 +57,8 @@ const String link_strings[8] = {"measure.html","measure.html","vas.html","vas.ht
 const String video_strings[8] = {"Pain Threshold","Pain Threshold","VAS","VAS","Temporal Summation","Temporal Summation","Cold Presssure","Temporal Summation"};
 const String ld_select_strings[8] = {"Local","Distal","Local","Distal","Local","Distal","",""};
 const String check_mark[2] = {"\"fa fa-check-circle\"","\"fa fa-times-circle\""};
+const String probe_select[4] = {"Probe 2","Probe 4","Probe 6","Probe 8"};
+
 const char *test_1_files[3] = {
     "/measure_1_sub_1.csv",
     "/measure_1_sub_2.csv",
@@ -90,7 +92,10 @@ TEST_PROGRESS test_flags = {
     .raw_roc_on = 0,
     .adjust = 0,
     .resume = 0,
-    .once = 0
+    .once = 0,
+    .avg_measurement = 0,
+    .avg_result_local = 0,
+    .avg_result_distal = 0
 };
 
 void write_test_progress(){    
@@ -161,23 +166,33 @@ void S_home(){
             if(test_flags.once == 0){
                 probe_event = E_no_event;
                 //create JSON document with space for 3 field
-                const size_t capacity = JSON_OBJECT_SIZE(3);
+                const size_t capacity = JSON_OBJECT_SIZE(4);
                 DynamicJsonDocument doc(capacity);
                 //insert the field value
-                doc["type"] = "id";
+                doc["type"] = "index_init";
                 doc["id"] = configuration_data.user_settings.unique_id;
                 doc["prev_id"] = configuration_data.user_settings.prev_unique_id;
+                doc["site_label"] = configuration_data.user_settings.site_label.c_str();
                 String json_id;
+
+                Serial.println("site_label contains:");
+                Serial.println(configuration_data.user_settings.site_label);
 
                 serializeJson(doc, json_id); 
                 webSocket.broadcastTXT(json_id);
+                Serial.println(json_id);
                 delay(100);
                 test_flags.once = 1;
             }                                
             break;
-        case E_rx_id:
+        case E_rx_site_label:
             if(test_flags.once == 0){
-                configuration_data.user_settings.unique_id = configuration_data.trx_data.socket_rx_data.user_settings.unique_id;
+                configuration_data.user_settings.site_label = configuration_data.trx_data.socket_rx_data.user_settings.site_label;
+                
+                Serial.println("site_label rx contains:");
+                Serial.println(configuration_data.user_settings.site_label);
+
+                save_probe_configuration();
                 test_flags.once = 1;
                 probe_event = E_no_event;                
             }                
@@ -318,10 +333,11 @@ void S_probe_measurement(){
             break;
         case E_stop:
             if(test_flags.once == 0){
+                probe_measurement_finish();
                 if(test_flags.sub < SUB_ROUTINE_3){
                     test_flags.sub = static_cast<TEST_SUB>(static_cast<int>(test_flags.sub) + 1);
                 }
-                probe_measurement_finish();
+                
                 test_flags.once = 1;
             }
             break;
@@ -786,12 +802,7 @@ void S_save(){
                 delay(10);
 
                 save_probe_configuration();
-                
-                test_flags.once = 1;                
-            }
-            break;
-        case E_start:
-            if(test_flags.once == 0){
+
                 //append all files from test protocol starting from TEST1 up until configuration_data.probe_test_progress.prev_test
                 File data = SPIFFS.open("/full_test_protocol.csv", FILE_WRITE);
 
@@ -848,6 +859,13 @@ void S_save(){
                 }
                                 
                 data.close();
+                
+                test_flags.once = 1;                
+            }
+            break;
+        case E_start:
+            if(test_flags.once == 0){
+                
 
                 //create JSON document with space for one field
                 const size_t capacity = JSON_OBJECT_SIZE(1);

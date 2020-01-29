@@ -48,7 +48,8 @@ typedef enum {
     E_rx_temp,
     E_rx_calibration_factor,
     E_rx_weight,
-    E_rx_settings,    
+    E_rx_settings,
+    E_rx_site_label,    
     E_tx_measure,
     E_tx_sub,
     E_error
@@ -73,7 +74,8 @@ typedef enum {
     DATA_VAS_MEASUREMENT,
     DATA_CALIBRATION_SETTINGS,
     DATA_CALIBRATION_WEIGHT,
-    DATA_CALIBRATION_FACTOR    
+    DATA_CALIBRATION_FACTOR,
+    DATA_SITE_LABEL    
 }SOCKET_MSG_TYPE;
 
 typedef struct {
@@ -87,6 +89,7 @@ typedef struct {
     uint32_t prev_unique_id;    
     int vas_freq;                    //frequency interval to store VAS data                       
     int max_pressure;
+    String site_label;
 }PROBE_USER_SETTINGS;
 
 typedef struct {
@@ -148,6 +151,9 @@ typedef struct {
     int adjust;
     int resume;
     int once;
+    int avg_measurement;
+    int avg_result_local;
+    int avg_result_distal;
 }TEST_PROGRESS;
 
 typedef void (*S_PROBE_STATE_pointer)();
@@ -173,6 +179,7 @@ extern const String link_strings[8];
 extern const String video_strings[8];
 extern const String ld_select_strings[8];
 extern const String check_mark[2];
+extern const String probe_select[4];
 extern const char *test_1_files[3];
 extern const char *test_2_files[3];
 extern const char *files[8];
