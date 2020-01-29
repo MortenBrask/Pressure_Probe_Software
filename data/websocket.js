@@ -17,6 +17,7 @@ var max_press_value = 0;
 var vas_freq_value = 0;
 var factor_value = 0;
 var weight_value = 0;
+var site_label_value = "undefined";
 
 
 function connect(){
@@ -121,6 +122,18 @@ function connect(){
             prev_id_value = msg.prev_id;
             var id_event = new CustomEvent('WS_id');
             document.dispatchEvent(id_event);
+            break;
+        case "index_init":
+            id_value = msg.id;
+            prev_id_value = msg.prev_id;
+            site_label_value = msg.site_label;
+            var index_init_event = new CustomEvent('WS_index_init');
+            document.dispatchEvent(index_init_event);
+            break;
+        case "site_label":            
+            site_label_value = msg.site_label;
+            var site_label_event = new CustomEvent('WS_site_label');
+            document.dispatchEvent(site_label_event);
             break;
     }
   };
@@ -254,6 +267,15 @@ function sendData(data_type) {
       weight: weight_value
       };
       console.log('known weight sent function');
+      console.log(data);
+      //webSocket.send(JSON.stringify(data));
+  }
+  else if(data_type === 7){
+    var data = {
+      type: "site_label",
+      site: site_label_value
+      };
+      console.log('site label sent function');
       console.log(data);
       //webSocket.send(JSON.stringify(data));
   }

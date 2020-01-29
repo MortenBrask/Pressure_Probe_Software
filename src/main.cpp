@@ -17,7 +17,7 @@ DNSServer dns;
 Ticker ticker;
 Ticker TimeTicker;
 
-const size_t capacity = JSON_OBJECT_SIZE(10) + 130; //size obtained from https://arduinojson.org/v6/assistant/
+const size_t capacity = JSON_OBJECT_SIZE(11) + 160; //size obtained from https://arduinojson.org/v6/assistant/
 DynamicJsonDocument probe_configuration(capacity);
 
 PROBE_DATA configuration_data{};

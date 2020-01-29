@@ -21,6 +21,7 @@ void load_probe_configuration(){
         configuration_data.user_settings.max_pressure = DEFAULT_MAX_PRESSURE;
         configuration_data.user_settings.unique_id = DEFAULT_UNIQUE_ID;
         configuration_data.user_settings.prev_unique_id = DEFAULT_PREV_UNIQUE_ID;
+        configuration_data.user_settings.site_label = DEFAULT_SITE_LABEL;
         configuration_data.calibration_settings.known_weight = DEFAULT_KNOWN_WEIGHT;        
         configuration_data.probe_test_progress.prev_test = DEFAULT_PREV_TEST;
         configuration_data.probe_test_progress.prev_sub = DEFAULT_PREV_SUB;
@@ -46,6 +47,7 @@ void load_probe_configuration(){
     configuration_data.user_settings.max_pressure = probe_configuration["max_pressure"] | DEFAULT_MAX_PRESSURE;  //default 1000 kPa (approx 10KG of pressure on 1cm2 surface area)    
     configuration_data.user_settings.unique_id = probe_configuration["unique_id"] | DEFAULT_UNIQUE_ID;
     configuration_data.user_settings.prev_unique_id = probe_configuration["prev_unique_id"] | DEFAULT_PREV_UNIQUE_ID;
+    configuration_data.user_settings.site_label = probe_configuration["site_label"] | DEFAULT_SITE_LABEL;
     configuration_data.calibration_settings.known_weight = probe_configuration["known_weight"] | DEFAULT_KNOWN_WEIGHT;    
     configuration_data.probe_test_progress.prev_test = probe_configuration["prev_test"] | DEFAULT_PREV_TEST;
     configuration_data.probe_test_progress.prev_sub = probe_configuration["prev_sub"] | DEFAULT_PREV_SUB;
@@ -58,11 +60,13 @@ void load_probe_configuration(){
     display.println("Configuration found");
     display.println("Loading values...");
     #endif
-    #ifdef PROBE_DEBUG       
+    #ifdef PROBE_DEBUG    
+
     display.printf("TEST = %i", configuration_data.probe_test_progress.prev_test);
     display.printf("calibration factor = %.2f", configuration_data.calibration_settings.calibration_factor);
     display.printf("vas freq = %i", configuration_data.user_settings.vas_freq);
-    display.printf("target roc = %.2f", configuration_data.user_settings.target_roc);    
+    display.printf("target roc = %.2f", configuration_data.user_settings.target_roc);
+    display.printf("site = %s", configuration_data.user_settings.site_label);    
     display.printf("max pressure = %i", configuration_data.user_settings.max_pressure);    
     #endif
     display.display();
@@ -85,6 +89,7 @@ void save_probe_configuration(){
     probe_configuration["max_pressure"] = configuration_data.user_settings.max_pressure;
     probe_configuration["unique_id"] = configuration_data.user_settings.unique_id;
     probe_configuration["prev_unique_id"] = configuration_data.user_settings.prev_unique_id;
+    probe_configuration["site_label"] = configuration_data.user_settings.site_label.c_str();
     probe_configuration["known_weight"] = configuration_data.calibration_settings.known_weight;   
     probe_configuration["prev_test"] = configuration_data.probe_test_progress.prev_test;
     probe_configuration["prev_sub"] = configuration_data.probe_test_progress.prev_sub;

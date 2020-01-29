@@ -141,6 +141,18 @@ void data_handler(uint8_t * payload){
         probe_event = E_rx_id;
         test_flags.once = 0;        
     }
+    else if(!strcmp(jstype,"site_label")){
+        const char * jssite = JSONDoc["site"];
+        configuration_data.trx_data.socket_rx_data.msg_type = DATA_SITE_LABEL;
+        configuration_data.trx_data.socket_trx_type = socket_RX;
+        configuration_data.trx_data.socket_rx_data.user_settings.site_label = jssite;
+    #ifdef PROBE_DEBUG
+        Serial.println("data received =");
+        Serial.println(jssite);
+    #endif
+        probe_event = E_rx_site_label;
+        test_flags.once = 0;        
+    }
     else if(!strcmp(jstype,"Settings")){        
         float jsroc = JSONDoc["roc"];
         int jsmaxpress = JSONDoc["max_press"];
@@ -269,6 +281,43 @@ String template_processor(const String& var)
     else if(var == "CHECK8"){
         return (configuration_data.probe_test_progress.prev_test > TEST_8) ? check_mark[0] : check_mark[1]; 
     }
+    else if(var == "PROBE_SELECT"){
+        
+        if(test_flags.test == TEST_3 || test_flags.test == TEST_5){
+            Serial.println("local avg:");
+            Serial.println(test_flags.avg_result_local);
+            if(test_flags.avg_result_local <= 200){
+                return probe_select[0];
+            }
+            else if(test_flags.avg_result_local <= 400){
+                return probe_select[1];
+            }
+            else if(test_flags.avg_result_local <= 600){
+                return probe_select[2];
+            }
+            else if(test_flags.avg_result_local <= 1000){
+                return probe_select[3];
+            }
+        }
+        else if(test_flags.test == TEST_4 || test_flags.test == TEST_6){
+            Serial.println("distal avg:");
+            Serial.println(test_flags.avg_result_distal);
+            if(test_flags.avg_result_distal <= 200.0){
+                return probe_select[0];
+            }
+            else if(test_flags.avg_result_distal <= 400.0){
+                return probe_select[1];
+            }
+            else if(test_flags.avg_result_distal <= 600.0){
+                return probe_select[2];
+            }
+            else if(test_flags.avg_result_distal <= 1000.0){
+                return probe_select[3];
+            }
+        }
+                
+    }
+    
         
     return String();
 }
@@ -289,6 +338,8 @@ const String evaluate_request(){
                         configuration_data.user_settings.prev_unique_id = configuration_data.user_settings.unique_id;//starting a new test elimantes ability to download previous testdata. thus the prev_id is equel to the new id
                         test_flags.test = TEST_1;
                         test_flags.sub = SUB_ROUTINE_0;
+                        test_flags.avg_result_local = 0.0;
+                        test_flags.avg_result_distal = 0.0;
                     }
                     else{
                         test_flags.test = static_cast<TEST_ROUTINE>(static_cast<int>(configuration_data.probe_test_progress.prev_test));
@@ -412,8 +463,10 @@ void redcap_post_message(){
 
 //token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id&1234,1234=&returnContent=count&returnFormat=json
 
-    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id,pressure_probe_complete\n";
+    String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,site_label,unique_id,pressure_probe_complete\n";
     api_param += configuration_data.user_settings.unique_id;
+    api_param += ",";
+    api_param += configuration_data.user_settings.site_label;
     api_param += ",";
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",2&returnContent=count&returnFormat=json";

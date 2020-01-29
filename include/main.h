@@ -14,7 +14,8 @@
 #define DEFAULT_PREV_UNIQUE_ID 3545338634
 #define DEFAULT_PREV_TEST 1
 #define DEFAULT_PREV_SUB 0
-#define DEAFULT_INTERVAL 1000
+#define DEFAULT_INTERVAL 1000
+#define DEFAULT_SITE_LABEL "undefined"
 
 #define SCREEN_WIDTH 128                                        // OLED display width, in pixels
 #define SCREEN_HEIGHT 64                                        // OLED display height, in pixels
