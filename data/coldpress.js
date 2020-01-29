@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function stopHandler(){
     clear();
     nextButton.style.display = 'inline-block';
+    painButton.style.display = 'none';
   }
 
   slider.on("change", function(sliderValue) {
@@ -104,6 +105,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
   
+  function audio(sec) {
+    play = setInterval(function() {
+      $('audio')[0].play();
+    }, sec);
+  }
+
   function dataTimer(sec) {
     interval = setInterval(function() {
       sendData(2)
@@ -119,12 +126,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         stopButton.style.display = 'none';        
         painButton.style.display = 'block';
         sendSetData();
+        audio(300);        
+      }
+
+      if(secondsPassed === 102) {
+        clearInterval(play);
       }
 
       if (secondsPassed === 119) {
         clear();
         secondsPassed++;
         nextButton.style.display = 'inline-block';
+        painButton.style.display = 'none';
         sendStopData();
       }
       displayTimeLeft(secondsPassed);

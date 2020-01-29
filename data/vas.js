@@ -3,8 +3,9 @@ $(document).ready(function() {
     const startButton = document.getElementById('start');
     const stopButton = document.getElementById('stop');
     const sound = document.getElementById('sound');
+    const next = document.getElementById('next');
 
-    //const play = setInterval(audio, 3000);
+    next.style.display = 'none';
 
     function audio(sec) {
       play = setInterval(function() {
@@ -21,14 +22,15 @@ $(document).ready(function() {
       e.preventDefault;
       startButton.style.display = 'none';
       stopButton.style.display = 'block';
-      audio(3000);
+      audio(1000);
       sendStartData();
     });
 
     stopButton.addEventListener('click', function(e) {
       e.preventDefault;
-      startButton.style.display = 'block';
+      startButton.style.display = 'none';
       stopButton.style.display = 'none';
+      next.style.display = 'block';
       clearInterval(play);
       sendStopData();
       sendData(2);

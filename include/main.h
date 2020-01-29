@@ -3,7 +3,7 @@
 
 //DEFINES-----------------------------------------------------------------------------------
 
-#define PROBE_DEBUG                                           //enable to view more messages on serial and oled display
+//#define PROBE_DEBUG                                           //enable to view more messages on serial and oled display
 
 #define DEFAULT_CALIBRATION_FACTOR 500.00
 #define DEFAULT_VAS_FREQ 1 

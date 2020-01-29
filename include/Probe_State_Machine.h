@@ -151,9 +151,9 @@ typedef struct {
     int adjust;
     int resume;
     int once;
-    float avg_measurement;
-    float avg_result_local;
-    float avg_result_distal;
+    int avg_measurement;
+    int avg_result_local;
+    int avg_result_distal;
 }TEST_PROGRESS;
 
 typedef void (*S_PROBE_STATE_pointer)();
