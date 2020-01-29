@@ -118,13 +118,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (secondsPassed === 100) {
         stopButton.style.display = 'none';        
         painButton.style.display = 'block';
-<<<<<<< HEAD
         sendSetData();
-=======
-        $('audio')[0].play();
-        $('audio')[0].play();
-        $('audio')[0].play();
->>>>>>> 7cd38b8... CPT - Adding three clicks after 100 seconds
       }
 
       if (secondsPassed === 119) {
