@@ -14,6 +14,14 @@ const heading = document.querySelector('#heading');
 const calText = document.querySelector('#calibration-text');
 //Selectors
 
+document.addEventListener('WS_set', setHandler, false);
+
+function setHandler() {
+  calibrationButton.style.display = 'block';
+  calText.innerHTML = "Place the known weight on the probe tip, using the optionally supplied platform decree. Press 'CALIBRATE' when ready";
+  //console.log("send id");
+}
+
 
 document.addEventListener('WS_factor', factorHandler, false);
 
@@ -40,8 +48,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     startButton.addEventListener('click', function(e) {
         sendStartData();
         heading.innerHTML = "Initializing calibration"
-        calText.innerHTML = "Place the known weight on the probe tip, using the optionally supplied platform decree. Press 'CALIBRATE' when ready";
-        calibrationButton.style.display = 'block';
+        
+        calibrationButton.style.display = 'none';
         startButton.style.display = 'none';
     });
 
@@ -53,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
     factorButton.addEventListener('click', function(e) {
-      factor_value = factorVal.value;  
+      factor_value = parseFloat(factorVal.value);  
       sendData(5);
     });
 
@@ -66,7 +74,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     weightButton.addEventListener('click', function(e) {
-      weight_value = weightValue.value;  
+      weight_value = parseFloat(weightValue.value);
+      weight_value = weight_value / 1000.0;  
       sendData(6);
     });
 

@@ -108,7 +108,7 @@ void data_handler(uint8_t * payload){
         test_flags.once = 0;
     }
     else if(!strcmp(jstype,"factor")){
-        int jscal_factor = JSONDoc["factor"];
+        float jscal_factor = JSONDoc["factor"];
         configuration_data.trx_data.socket_rx_data.msg_type = DATA_CALIBRATION_FACTOR;
         configuration_data.trx_data.socket_trx_type = socket_RX;
         configuration_data.trx_data.socket_rx_data.calibration_data.calibration_factor = jscal_factor;
@@ -119,7 +119,7 @@ void data_handler(uint8_t * payload){
         test_flags.once = 0;
     }
     else if(!strcmp(jstype,"weight")){
-        int jscal_weight = JSONDoc["weight"];
+        float jscal_weight = JSONDoc["weight"];
         configuration_data.trx_data.socket_rx_data.msg_type = DATA_CALIBRATION_WEIGHT;
         configuration_data.trx_data.socket_trx_type = socket_RX;
         configuration_data.trx_data.socket_rx_data.calibration_data.known_weight = jscal_weight;
@@ -299,7 +299,7 @@ String template_processor(const String& var)
                 return probe_select[3];
             }
         }
-        else if(test_flags.test == TEST_4 || test_flags.test == TEST_6){
+        else if(test_flags.test == TEST_4 || test_flags.test == TEST_6 || test_flags.test == TEST_8){
             Serial.println("distal avg:");
             Serial.println(test_flags.avg_result_distal);
             if(test_flags.avg_result_distal <= 200.0){
