@@ -55,7 +55,7 @@ const S_TEST_REQUEST_MATRIX test_request_matrix[9][4] = {
 
 const String link_strings[8] = {"measure.html","measure.html","vas.html","vas.html","summation.html","summation.html","coldpress.html","summation.html"};
 const String video_strings[8] = {"Pain Threshold","Pain Threshold","VAS","VAS","Temporal Summation","Temporal Summation","Cold Presssure","Temporal Summation"};
-const String ld_select_strings[8] = {"Local","Distal","Local","Distal","Local","Distal","",""};
+const String ld_select_strings[8] = {"Local","Distal","Local","Distal","Local","Distal","","Distal"};
 const String check_mark[2] = {"\"fa fa-check-circle\"","\"fa fa-times-circle\""};
 const String probe_select[4] = {"Probe 2","Probe 4","Probe 6","Probe 8"};
 
@@ -398,7 +398,7 @@ void S_calibration(){
                 DynamicJsonDocument doc_2(capacity);
                 //insert the field value
                 doc_2["type"] = "weight";
-                doc_2["weight"] = configuration_data.calibration_settings.known_weight;
+                doc_2["weight"] = static_cast<int>(configuration_data.calibration_settings.known_weight * 1000.0);
                 String json_weight;
 
                 serializeJson(doc_2, json_weight); 
@@ -411,6 +411,16 @@ void S_calibration(){
                 
                 Serial.println("Calibration init");
                 init_calibration();
+
+                const size_t capacity = JSON_OBJECT_SIZE(1);
+
+                DynamicJsonDocument doc(capacity);
+                //insert the field value
+                doc["type"] = "set";
+                String json_set;
+
+                serializeJson(doc, json_set); 
+                webSocket.broadcastTXT(json_set);
                 test_flags.once = 1;
             }           
             break;
@@ -439,8 +449,11 @@ void S_calibration(){
             break;
         case E_rx_weight:
             if(test_flags.once == 0){
+                
                 configuration_data.calibration_settings.known_weight = configuration_data.trx_data.socket_rx_data.calibration_data.known_weight;
-                probe_event = E_set;
+                Serial.println("known weight:");
+                Serial.println(configuration_data.calibration_settings.known_weight);
+                probe_event = E_no_event;
                 test_flags.once = 1;
             }
             break;

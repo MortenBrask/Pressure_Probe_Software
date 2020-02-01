@@ -29,8 +29,11 @@ void calibrate_hx711(){
     display.display();
     units = Probe.get_units(20);
 
-    if(configuration_data.calibration_settings.known_weight != 0){
-    configuration_data.calibration_settings.calibration_factor = units / configuration_data.calibration_settings.known_weight;
+    if(configuration_data.calibration_settings.known_weight != 0.0){
+        Serial.println("calculating");
+        configuration_data.calibration_settings.calibration_factor = units / configuration_data.calibration_settings.known_weight;
+        Serial.println("calibration factor:");
+        Serial.println(configuration_data.calibration_settings.calibration_factor);
     }
 
     const size_t capacity = JSON_OBJECT_SIZE(2);
@@ -93,7 +96,7 @@ void fine_tune_hx711(){
     const size_t capacity = JSON_OBJECT_SIZE(2);
     DynamicJsonDocument doc(capacity);
     doc["type"] = "measure";
-    doc["measure"] = units;
+    doc["measure"] = units * 1000.0;
 
     String json_cal;
 
