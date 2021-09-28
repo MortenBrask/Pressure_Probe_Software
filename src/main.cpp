@@ -79,10 +79,19 @@ void setup() {
   //Initialize OLED
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
+  
+  // display.setTextColor(WHITE);
+  // display.setCursor(0,0);
+  // display.setTextSize(1);
+  // display.println("Morten ER KONGE!");
+
+  // while(1);
   //Display LOGO
   display.drawBitmap((SCREEN_WIDTH - mimanex_WIDHT) / 2, (SCREEN_HEIGHT - mimanex_HEIGHT) / 2,
       Mimanex_LOGO, mimanex_WIDHT, mimanex_HEIGHT, 1);
   display.display();
+  
+
   delay(2000);
 
   // Initialize SPIFFS

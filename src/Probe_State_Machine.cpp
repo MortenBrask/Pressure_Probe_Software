@@ -38,7 +38,7 @@ const S_VALID_NEXT_STATE valid_next_state[10][10] = {
     /*S_MEASURE*/                   {{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_VIDEO},{S_MEASURE},{S_HOME},{S_HOME},{S_HOME}},
     /*S_VAS*/                       {{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_VIDEO},{S_HOME},{S_VAS},{S_HOME},{S_HOME}},
     /*S_TEMP*/                      {{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_SAVE},{S_VIDEO},{S_HOME},{S_HOME},{S_TEMP},{S_HOME}},
-    /*S_COLD*/                      {{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_VIDEO},{S_HOME},{S_HOME},{S_HOME},{S_COLD}}
+    /*S_COLD*/                      {{S_HOME},{S_HOME},{S_HOME},{S_HOME},{S_SAVE},{S_VIDEO},{S_HOME},{S_HOME},{S_HOME},{S_COLD}}
 };
 
 const S_TEST_REQUEST_MATRIX test_request_matrix[9][4] = {
@@ -49,7 +49,7 @@ const S_TEST_REQUEST_MATRIX test_request_matrix[9][4] = {
     /*TEST_5 */                     {{SUB_ROUTINE_0, S_VIDEO},{SUB_ROUTINE_1, S_TEMP},{SUB_ROUTINE_2, S_NA},{SUB_ROUTINE_3, S_NA}},
     /*TEST_6 */                     {{SUB_ROUTINE_0, S_VIDEO},{SUB_ROUTINE_1, S_TEMP},{SUB_ROUTINE_2, S_NA},{SUB_ROUTINE_3, S_NA}},
     /*TEST_7 */                     {{SUB_ROUTINE_0, S_VIDEO},{SUB_ROUTINE_1, S_COLD},{SUB_ROUTINE_2, S_COLD},{SUB_ROUTINE_3, S_COLD}},
-    /*TEST_8 */                     {{SUB_ROUTINE_0, S_VIDEO},{SUB_ROUTINE_1, S_TEMP},{SUB_ROUTINE_2, S_NA},{SUB_ROUTINE_3, S_NA}},
+    /*TEST_8 */                     //{{SUB_ROUTINE_0, S_VIDEO},{SUB_ROUTINE_1, S_TEMP},{SUB_ROUTINE_2, S_NA},{SUB_ROUTINE_3, S_NA}},
     /*TEST_FINISH*/                 {{SUB_ROUTINE_0, S_SAVE},{SUB_ROUTINE_1, S_NA},{SUB_ROUTINE_2, S_NA},{SUB_ROUTINE_3, S_NA}}
 };
 
@@ -85,7 +85,20 @@ volatile S_PROBE_STATE probe_state = S_HOME;
 volatile E_PROBE_EVENT probe_event = E_no_event;
 volatile S_PROBE_STATE_pointer probe_state_pointer = S_home;
 
+//1,3,5,2,4,6,7 
+const uint8_t TEST_ORDER[8] ={
+    0,
+    2,
+    4,
+    1,
+    3,
+    5,
+    6,
+    7
+};
+
 TEST_PROGRESS test_flags = {
+    .test_cnt = TEST_1,
     .test = TEST_1,
     .sub = SUB_ROUTINE_1,
     .raw_max_on = 0,
@@ -826,7 +839,7 @@ void S_save(){
                 }
                 File test_data; 
 
-                if(configuration_data.probe_test_progress.prev_test == TEST_8){
+                if(configuration_data.probe_test_progress.prev_test == TEST_7 /*TEST_8*/){
                     
                     for(int i = 0; i <= configuration_data.probe_test_progress.prev_test; i++){
 

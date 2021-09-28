@@ -234,8 +234,8 @@ String template_processor(const String& var)
                 return String("https://www.youtube.com/embed/N-ks1kCI6Pw");
             case TEST_7:
                 return String("https://www.youtube.com/embed/4k_YWlNdheA");
-            case TEST_8:
-                return String("https://www.youtube.com/embed/FXQow21r86Y");
+            //case TEST_8:
+                //return String("https://www.youtube.com/embed/FXQow21r86Y");
             default:
                 return String("https://www.youtube.com/embed/NpEaa2P7qZI");
         }         
@@ -250,7 +250,7 @@ String template_processor(const String& var)
         return ld_select_strings[test_flags.test];
     }
     else if(var == "TEMP_NEXT"){
-        if(test_flags.test == TEST_8){
+        if(test_flags.test == TEST_7/*TEST_8*/){
             return "download.html";
         }
         else{
@@ -279,7 +279,7 @@ String template_processor(const String& var)
         return (configuration_data.probe_test_progress.prev_test > TEST_7) ? check_mark[0] : check_mark[1]; 
     }
     else if(var == "CHECK8"){
-        return (configuration_data.probe_test_progress.prev_test > TEST_8) ? check_mark[0] : check_mark[1]; 
+        return (configuration_data.probe_test_progress.prev_test > TEST_7/*TEST_8*/) ? check_mark[0] : check_mark[1]; 
     }
     else if(var == "PROBE_SELECT"){
         
@@ -299,7 +299,7 @@ String template_processor(const String& var)
                 return probe_select[3];
             }
         }
-        else if(test_flags.test == TEST_4 || test_flags.test == TEST_6 || test_flags.test == TEST_8){
+        else if(test_flags.test == TEST_4 || test_flags.test == TEST_6 /*|| test_flags.test == TEST_8*/){
             Serial.println("distal avg:");
             Serial.println(test_flags.avg_result_distal);
             if(test_flags.avg_result_distal <= 200.0){
@@ -336,6 +336,7 @@ const String evaluate_request(){
                     probe_super_state = SS_TEST;
                     if(test_flags.resume == 0){
                         configuration_data.user_settings.prev_unique_id = configuration_data.user_settings.unique_id;//starting a new test elimantes ability to download previous testdata. thus the prev_id is equel to the new id
+                        test_flags.test_cnt = TEST_1;
                         test_flags.test = TEST_1;
                         test_flags.sub = SUB_ROUTINE_0;
                         test_flags.avg_result_local = 0.0;
@@ -372,9 +373,14 @@ const String evaluate_request(){
                     if(test_flags.test < TEST_FINISH){            
                         if(test_flags.sub == SUB_ROUTINE_3 || check_test.probe_test_state == S_NA){
                             configuration_data.probe_test_progress.prev_sub = SUB_ROUTINE_0;
-                            configuration_data.probe_test_progress.prev_test = static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test) + 1);
+                            //configuration_data.probe_test_progress.prev_test = static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test) + 1);
+                            configuration_data.probe_test_progress.prev_test = TEST_ORDER[static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test_cnt) + 1)];
                             
-                            test_flags.test  = static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test) + 1);
+                            test_flags.test = static_cast<TEST_ROUTINE>(static_cast<int>(TEST_ORDER[test_flags.test_cnt + 1]));
+                            //test_flags.test  = static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test) + 1);
+
+                            test_flags.test_cnt = static_cast<TEST_ROUTINE>(static_cast<int>(test_flags.test_cnt) + 1);
+
                             test_flags.sub = SUB_ROUTINE_0;                            
                         }
                         else if(test_flags.sub < SUB_ROUTINE_3){
@@ -389,6 +395,7 @@ const String evaluate_request(){
                             configuration_data.probe_test_progress.prev_sub = test_flags.sub;
                             configuration_data.probe_test_progress.prev_test = test_flags.test;                            
 
+                            test_flags.test_cnt = TEST_1;
                             test_flags.test  = TEST_1;
                             test_flags.sub = SUB_ROUTINE_0;
                             probe_super_state = SS_CONFIG;                            

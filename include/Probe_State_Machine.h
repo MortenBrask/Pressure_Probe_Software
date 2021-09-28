@@ -132,9 +132,10 @@ typedef enum {
     TEST_5,
     TEST_6,
     TEST_7,
-    TEST_8,
+    //TEST_8,
     TEST_FINISH
 }TEST_ROUTINE;
+
 
 typedef enum {
     SUB_ROUTINE_0,
@@ -144,6 +145,7 @@ typedef enum {
 }TEST_SUB;
 
 typedef struct {
+    TEST_ROUTINE test_cnt;
     TEST_ROUTINE test;
     TEST_SUB sub;
     int raw_max_on;
@@ -183,6 +185,7 @@ extern const String probe_select[4];
 extern const char *test_1_files[3];
 extern const char *test_2_files[3];
 extern const char *files[8];
+extern const uint8_t TEST_ORDER[8];
 
 extern TEST_PROGRESS test_flags;
 

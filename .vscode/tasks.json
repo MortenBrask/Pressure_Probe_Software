@@ -17,6 +17,15 @@
                 "$platformio"
             ],
             "group": "test"
+        },
+        {
+            "type": "PlatformIO",
+            "task": "Build Filesystem Image (custom_builtin_table)",
+            "problemMatcher": [
+                "$platformio"
+            ],
+            "group": "build",
+            "label": "PlatformIO: Build Filesystem Image (custom_builtin_table)"
         }
     ]
 }
