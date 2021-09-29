@@ -478,7 +478,8 @@ void redcap_post_message(){
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",2&returnContent=count&returnFormat=json";
 
-    
+#ifdef PROBE_DEBUG
+            
     //api_param + "field=test_result&event=&returnFormat=json";
     Serial.println(api_param);
     //Serial.println(api_body);
@@ -495,6 +496,8 @@ void redcap_post_message(){
   Serial.println(WiFi.gatewayIP());
   Serial.print("DNS: ");
   Serial.println(WiFi.dnsIP());
+
+    #endif
 //----------------------------------------------------------------POST record to redcap START----------------------------------------------------------//
     //WiFiClient client;
     //int code = client.connect("http://open.rsyd.dk/redcap/api/", 443, timeout);
