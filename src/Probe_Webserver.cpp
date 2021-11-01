@@ -469,7 +469,7 @@ void redcap_post_message(){
     File file = SPIFFS.open("/full_test_protocol.csv", FILE_READ);
 
 //token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,unique_id&1234,1234=&returnContent=count&returnFormat=json
-
+                              
     String api_param = "token=4A7B39E342D72F953EC4E03BFD3AA4D4&content=record&format=csv&type=flat&overwriteBehavior=normal&forceAutoNumber=false&data=record_id,site_label,unique_id,pressure_probe_complete\n";
     api_param += configuration_data.user_settings.unique_id;
     api_param += ",";
@@ -499,6 +499,7 @@ void redcap_post_message(){
 
     #endif
 //----------------------------------------------------------------POST record to redcap START----------------------------------------------------------//
+    client.setInsecure();
     //WiFiClient client;
     //int code = client.connect("http://open.rsyd.dk/redcap/api/", 443, timeout);
     if (!client.connect("https://open.rsyd.dk", 443, timeout)) {
