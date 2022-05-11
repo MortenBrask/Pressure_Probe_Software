@@ -204,7 +204,7 @@ extern void fine_tune_hx711();
 
 extern void initialize_variables();
 
-extern void probe_measurement_init();
+extern int8_t probe_measurement_init();
 extern void probe_measurement();
 extern void probe_measurement_finish();
 

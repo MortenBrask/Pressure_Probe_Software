@@ -56,7 +56,7 @@ void initialize_variables(){
     }
 }
 
-void probe_measurement_init(){    
+int8_t probe_measurement_init(){    
 
     initialize_variables();
     if(probe_state == S_RAW_CAPTURE){
@@ -65,7 +65,7 @@ void probe_measurement_init(){
         if (!test_measurement) {
             display.println("ERROR ON OPEN FILE");
             Serial.println("ERROR ON OPEN FILE");
-            return;
+            return 0;
         }
         start_time = millis();
 
@@ -96,7 +96,7 @@ void probe_measurement_init(){
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
                             Serial.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }                    
                         break;
                     case 2:
@@ -104,7 +104,7 @@ void probe_measurement_init(){
 
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }
                         break;
                     case 3:
@@ -112,7 +112,7 @@ void probe_measurement_init(){
 
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }
                         break;
                     default:
@@ -127,7 +127,7 @@ void probe_measurement_init(){
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
                             Serial.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }                    
                         break;
                     case 2:
@@ -135,7 +135,7 @@ void probe_measurement_init(){
 
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }
                         break;
                     case 3:
@@ -143,7 +143,7 @@ void probe_measurement_init(){
 
                         if (!test_measurement) {
                             display.println("ERROR ON OPEN FILE");
-                            return;
+                            return 0;
                         }
                         break; 
                     default:
@@ -179,7 +179,8 @@ void probe_measurement_init(){
         test_measurement.print("0");
         test_measurement.println("");
     }    
-    gauge.begin();            
+    gauge.begin();
+    return 1;            
 }
 
 void probe_measurement_finish(){           

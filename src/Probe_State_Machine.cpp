@@ -338,11 +338,15 @@ void S_probe_measurement(){
             if(test_flags.once == 0){
                 
                 Serial.println("Measurement init");
-                probe_measurement_init();
-                test_flags.once = 1;
+                if(probe_measurement_init()){
+                    test_flags.once = 1;
+                }
+                
             }
-                        
-            probe_measurement();
+            else{
+                probe_measurement();
+            }            
+            
             break;
         case E_stop:
             if(test_flags.once == 0){
